@@ -1,4 +1,4 @@
- 	class PostsController < ApplicationController
+class PostsController < ApplicationController
 	before_action :set_post, only: [:show, :edit, :update]
 	# use before_action in order to 
 	# 1. set up instance variable for action
@@ -10,7 +10,6 @@
 
   def show
 # 	@post = Post.find(params[:id])
-    @comment = Comment.new
   end
 
   def new
@@ -19,12 +18,12 @@
 
   def create
   	@post = Post.new(post_params)
-  	@post.creator = User.first # TODO:change once we have authentication
+
   	if @post.save
   		flash[:notice] = "Your post was created."
   		redirect_to posts_path
   	else #validation error
-  		render :new
+  		render 'new'
   	end
 
 
@@ -58,7 +57,7 @@
 
   def post_params
 #  	if user.admin?
-  		params.require(:post).permit(:title, :url, :description, category_ids: [])
+  		params.require(:post).permit!
 #  	else
 #  	params.require(:post).permit(:title, :url, :creator)
 #  end
